@@ -1,0 +1,42 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: agent
+  namespace: monitoring
+spec:
+  version: v2.39.1
+  serviceAccountName: prometheus
+  serviceMonitorSelector:
+    matchLabels:
+      component: prometheus-agent
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      monitoring: prometheus-agent
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  replicas: 1
+  logLevel: debug
+  logFormat: logfmt
+  scrapeInterval: 30s
+  remoteWrite:
+
+  - url: https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-e25de7e4-c5b8-4768-a344-e5cb91155df3/api/v1/remote_write
+    sigv4:
+      region: us-east-1
+    queueConfig:
+      maxSamplesPerSend: 1000
+      maxShards: 200
+      capacity: 2500
+  containers:
+  - name: prometheus
+    args:
+    - --config.file=/etc/prometheus/config_out/prometheus.env.yaml
+    - --storage.agent.path=/prometheus
+    - --enable-feature=agent
+    - --web.enable-lifecycle
