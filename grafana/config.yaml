@@ -23,7 +23,7 @@ data:
     provisioning = /etc/grafana/provisioning
     
     [server]
-    root_url = "https://my-grafana.example.pvt"
+    root_url = <url>
 
     [auth.anonymous]
     enabled = false

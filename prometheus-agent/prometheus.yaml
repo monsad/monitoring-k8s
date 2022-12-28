@@ -26,7 +26,7 @@ spec:
   scrapeInterval: 30s
   remoteWrite:
 
-  - url: https://aps-workspaces.us-east-1.amazonaws.com/workspaces/ws-e25de7e4-c5b8-4768-a344-e5cb91155df3/api/v1/remote_write
+  - url: <aws_endpoint>
     sigv4:
       region: us-east-1
     queueConfig:
